@@ -2,8 +2,9 @@
 
 namespace OrderManagement.Api.Controllers.V1;
 
+[ApiVersion("1.0")]
 [Route(ApiRoutes.Prefix + "/orders")]
-public class OrderController : ApiControllerBase
+public class OrdersController : ApiControllerBase
 {
     [HttpGet]
     public IActionResult Get()
