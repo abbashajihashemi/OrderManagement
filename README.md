@@ -1,6 +1,14 @@
-﻿# Project Porpuse
-# Structure
-# How to run
-Install dotnet SDK version 8.1.1 and write this command in terminal:
+﻿# OrderManagement
 
-``dotnet run`` on `OrderManagmenet.API`
+Modular Monolith for learning Docker, Message Brokers (RabbitMQ + MassTransit) and Observability with .NET 8.
+
+## Structure
+- `OrderManagement.Api`
+- `OrderManagement.Application`
+- `OrderManagement.Domain`
+- `OrderManagement.Infrastructure`
+
+## How to run
+```bash
+cd src/OrderManagement.Api
+dotnet run
