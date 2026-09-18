@@ -1,0 +1,6 @@
+@HostAddress = http://localhost:5107
+
+GET {{HostAddress}}/api/v1/orders
+Accept: application/json
+
+###
