@@ -5,13 +5,14 @@
       context: .
       dockerfile: docker/api/Dockerfile
     ports:
-      - "${API_PORT:-8010}:${API_PORT:-8010}"
+      - "8010:8010"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:${APIP_PORT:-8010}
+      - ASPNETCORE_URLS=http://+:8010
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:${API_PORT:-8010}/health || exit 1" ]   # It will be updaate
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://localhost:8010/health"]
+      interval: 15s
       timeout: 5s
       retries: 3
+      start_period: 10s
     restart: unless-stopped

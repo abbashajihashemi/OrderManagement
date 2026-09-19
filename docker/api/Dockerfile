@@ -39,4 +39,9 @@ COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:8010
 EXPOSE 8010
 
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+USER appuser
+
 ENTRYPOINT ["dotnet", "OrderManagement.Api.dll"]
