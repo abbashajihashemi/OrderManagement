@@ -1,4 +1,4 @@
-@HostAddress = http://localhost:5107
+@HostAddress = http://localhost:8010
 
 GET {{HostAddress}}/api/v1/orders
 Accept: application/json

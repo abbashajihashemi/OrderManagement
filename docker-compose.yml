@@ -1,5 +1,6 @@
 ﻿services:
   api:
+    container_name: order-api
     build:
       context: .
       dockerfile: docker/api/Dockerfile
@@ -7,4 +8,10 @@
       - "8010:8010"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8010
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]   # It will be updaate
+      interval: 30s
+      timeout: 5s
+      retries: 3
     restart: unless-stopped
