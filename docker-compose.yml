@@ -9,10 +9,13 @@
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
       - ASPNETCORE_URLS=http://+:${API_PORT:-8010}
+      - Serilog__WriteTo__1__Args__serverUrl=http://seq:80
+    depends_on:
+      - seq
     env_file:
       - .env
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${API_PORT:-8010}/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:${API_PORT:-8010}/health" ]
       interval: 15s
       timeout: 5s
       retries: 3
@@ -20,3 +23,13 @@
     restart: unless-stopped
     volumes:
       - ./src:/src:ro
+
+  seq:
+    image: datalust/seq:latest
+    container_name: order-seq
+    ports:
+      - "5341:80"
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_NOAUTHENTICATION=true
+    restart: unless-stopped

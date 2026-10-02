@@ -10,7 +10,6 @@ public static class LoggingExtensions
             .ReadFrom.Services(services)
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
-            .Enrich.WithThreadId()
-            .WriteTo.Console());
+            .Enrich.WithThreadId());
     }
 }
