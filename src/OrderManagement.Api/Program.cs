@@ -18,7 +18,7 @@ try
 
     app.Run();
 }
-catch (Exception e) when (e is HostAbortedException)
+catch (Exception e) when (e is not HostAbortedException)
 {
     Log.Fatal(e, "Application terminated unexpectedly");
 }
