@@ -1,4 +1,4 @@
-@HostAddress = http://localhost:8010
+@HostAddress = http://localhost:5107
 
 GET {{HostAddress}}/health
 Accept: application/json

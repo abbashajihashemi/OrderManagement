@@ -1,16 +1,28 @@
 using OrderManagement.Api.Extensions;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHealthChecks();
+try
+{
+    Log.Information("Starting OrderManagement API");
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddVersioningApis();
+    builder.Host.UseSerilogLogging();
+    builder.Services.AddApiServices();
 
-var app = builder.Build();
+    var app = builder.Build();
+    app.UseApiPipeline();
 
-app.MapControllers();
-app.MapHealthChecks("/health");
-
-app.Run();
+    app.Run();
+}
+catch (Exception e) when (e is HostAbortedException)
+{
+    Log.Fatal(e, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
