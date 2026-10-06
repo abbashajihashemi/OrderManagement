@@ -11,4 +11,10 @@ public class OrdersController : ApiControllerBase
     {
         return Ok(new { Message = "Order Management API is alive" });
     }
+
+    [HttpGet("error")]
+    public IActionResult ThrowError()
+    {
+        throw new InvalidOperationException("This is a test exception for logging");
+    }
 }

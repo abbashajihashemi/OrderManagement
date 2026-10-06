@@ -10,6 +10,9 @@ public static class LoggingExtensions
             .ReadFrom.Services(services)
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
-            .Enrich.WithThreadId());
+            .Enrich.WithThreadId()
+            .Enrich.WithProperty("Application", "OrderManagement.Api")
+            .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
+        );
     }
 }

@@ -28,6 +28,14 @@ public static class WebApplicationExtensions
                     ? Serilog.Events.LogEventLevel.Error
                     : Serilog.Events.LogEventLevel.Information;
             };
+
+            options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+            {
+                diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+                diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
+                diagnosticContext.Set("UserAgent", httpContext.Request.Headers.UserAgent.ToString());
+                diagnosticContext.Set("ClientIP", httpContext.Connection.RemoteIpAddress?.ToString());
+            };
         });
     }
 }

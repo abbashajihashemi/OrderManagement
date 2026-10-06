@@ -7,3 +7,8 @@ Accept: application/json
 
 GET {{HostAddress}}/api/v1/orders
 Accept: application/json
+
+###
+
+GET {{HostAddress}}/api/v1/orders/error
+Accept: application/json

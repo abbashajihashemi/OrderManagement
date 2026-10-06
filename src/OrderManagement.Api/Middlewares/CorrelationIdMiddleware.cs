@@ -10,7 +10,7 @@ public class CorrelationIdMiddleware(RequestDelegate next)
     {
         var correlationId = context.Request.Headers[CorrelationIdHeader].FirstOrDefault()
                             ?? Guid.NewGuid().ToString("N");
-        
+
         context.Items[LogProperties.CorrelationId] = correlationId;
         context.Response.Headers[CorrelationIdHeader] = correlationId;
 
