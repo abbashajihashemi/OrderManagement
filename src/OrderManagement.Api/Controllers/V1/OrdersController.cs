@@ -1,15 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderManagement.Application.Abstractions.BuildingBlocks.Messaging;
+using OrderManagement.Application.Orders.Queries;
 
 namespace OrderManagement.Api.Controllers.V1;
 
 [ApiVersion("1.0")]
 [Route(ApiRoutes.Prefix + "/orders")]
-public class OrdersController : ApiControllerBase
+public class OrdersController(IDispatcher dispatcher) : ApiControllerBase
 {
-    [HttpGet]
-    public IActionResult Get()
+    [HttpPost]
+    public async Task<IActionResult> Get([FromBody] OrderPageFilter filter, CancellationToken ct = default)
     {
-        return Ok(new { Message = "Order Management API is alive" });
+        var query = new OrderPageQuery(filter);
+        var result = await dispatcher.SendAsync(query, ct);
+
+        return result.IsSuccess ? Ok(result) : this.ToProblem(result.Error!);
+    }
+
+    [HttpGet("{orderId:guid}")]
+    public async Task<IActionResult> Detail([FromRoute] Guid orderId, CancellationToken ct = default)
+    {
+        var request = new OrderDetailQuery(orderId);
+        var result = await dispatcher.SendAsync(request, ct);
+
+        return result.IsSuccess ? Ok(result) : this.ToProblem(result.Error!);
     }
 
     [HttpGet("error")]

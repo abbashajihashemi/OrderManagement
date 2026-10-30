@@ -9,6 +9,7 @@ public static class WebApplicationExtensions
     {
         app.UseRequestLogging();
 
+        app.UseExceptionHandler();
         app.MapControllers();
         app.MapHealthChecks("/health");
     }

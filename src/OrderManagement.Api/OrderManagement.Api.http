@@ -1,12 +1,27 @@
 @HostAddress = http://localhost:8010
+@orderId = 358e482b-1c3d-4a38-93fd-593b0456e241
 
 GET {{HostAddress}}/health
 Accept: application/json
 
 ###
 
-GET {{HostAddress}}/api/v1/orders
+POST {{HostAddress}}/api/v1/orders
 Accept: application/json
+Content-Type: application/json
+X-Correlation-Id: demo-corr-001
+
+{
+  "page": 1,
+  "pageSize": 10,
+  "minTotal": 50,
+  "maxTotal": 500
+}
+###
+
+GET {{HostAddress}}/api/v1/orders/10000000-0000-0000-0000-000000000003
+Accept: application/json
+X-Correlation-Id: demo-corr-023
 
 ###
 
