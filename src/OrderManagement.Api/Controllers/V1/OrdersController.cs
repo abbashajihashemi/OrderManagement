@@ -13,7 +13,8 @@ public class OrdersController(IDispatcher dispatcher) : ApiControllerBase
     {
         var query = new OrderPageQuery(filter);
         var result = await dispatcher.SendAsync(query, ct);
-        return Ok(result);
+
+        return result.IsSuccess ? Ok(result) : this.ToProblem(result.Error!);
     }
 
     [HttpGet("{orderId:guid}")]
@@ -22,7 +23,7 @@ public class OrdersController(IDispatcher dispatcher) : ApiControllerBase
         var request = new OrderDetailQuery(orderId);
         var result = await dispatcher.SendAsync(request, ct);
 
-        return Ok(result);
+        return result.IsSuccess ? Ok(result) : this.ToProblem(result.Error!);
     }
 
     [HttpGet("error")]

@@ -22,7 +22,7 @@ public class InventoryClient(
         logger.LogInformation("Stock inquiry sending request {body}", body);
 
         using var response = await httpClient.PostAsJsonAsync(
-            "api/v1/inventory/inquery", body, ct);
+            "api/v1/inventory/inquiry", body, ct);
 
         response.EnsureSuccessStatusCode();
 

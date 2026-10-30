@@ -5,7 +5,7 @@ namespace OrderManagement.Application.Orders.Queries;
 
 public class OrderPageHandler(
     IOrderRepository orderRepository,
-    ILogger<OrderDetailHandler> logger
+    ILogger<OrderPageHandler> logger
 ) : IHandler<OrderPageQuery, Result<PagedResult<OrderDto>>>
 {
     public async Task<Result<PagedResult<OrderDto>>> HandleAsync(OrderPageQuery request, CancellationToken ct = default)

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.DependencyInjection;
+using OrderManagement.Application.Abstractions.BuildingBlocks.Exceptions;
+using OrderManagement.Application.Abstractions.BuildingBlocks.Validation;
 
 namespace OrderManagement.Application.Abstractions.BuildingBlocks.Messaging;
 
@@ -27,7 +29,20 @@ public sealed class Dispatcher(IServiceProvider serviceProvider) : IDispatcher
     private sealed class HandlerWrapperImpl<TRequest, TResponse> : HandlerWrapper<TResponse>
         where TRequest : IRequest<TResponse>
     {
-        public override Task<TResponse> HandleAsync(IRequest<TResponse> request, IServiceProvider sp, CancellationToken ct)
-            => sp.GetRequiredService<IHandler<TRequest, TResponse>>().HandleAsync((TRequest)request, ct);
+        public override Task<TResponse> HandleAsync(
+            IRequest<TResponse> request,
+            IServiceProvider sp,
+            CancellationToken ct)
+        {
+            var typed = (TRequest)request;
+
+            var errors = sp.GetServices<IValidator<TRequest>>()
+                .SelectMany(v => v.Validate(typed))
+                .ToList();
+
+            if (errors.Count > 0) throw new ValidationException(errors);
+
+            return sp.GetRequiredService<IHandler<TRequest, TResponse>>().HandleAsync((TRequest)request, ct);
+        }
     }
 }

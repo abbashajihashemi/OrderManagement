@@ -5,7 +5,7 @@ using OrderManagement.Domain;
 
 namespace OrderManagement.Application.Orders.Queries;
 
-public class OrderDetailHandler(
+public sealed class OrderDetailHandler(
     IOrderRepository orderRepository,
     IInventoryClient inventoryClient,
     ILogger<OrderDetailHandler> logger
@@ -13,19 +13,19 @@ public class OrderDetailHandler(
 {
     public async Task<Result<OrderDetailDto>> HandleAsync(OrderDetailQuery request, CancellationToken ct = default)
     {
-        logger.LogInformation("OrderDetailHandler start for order by id {id}", request.Id);
+        logger.LogInformation("OrderDetailHandler start for order by orderId {orderId}", request.Id);
 
         var order = await orderRepository.GetOrderWithItemsByIdAsync(request.Id, ct);
         if (order == null)
         {
-            logger.LogWarning("OrderDetailHandler order not found {id}", request.Id);
-            return Result<OrderDetailDto>.Failure("Order not found");
+            logger.LogWarning("OrderDetailHandler order not found orderId: {orderId}", request.Id);
+            return Result<OrderDetailDto>.Failure(OrderErrors.NotFound);
         }
 
         var itemsInventories = await GetProductsInventories(order, ct);
         var result = MapOrderToResult(order, itemsInventories);
 
-        logger.LogInformation("OrderDetailHandler finish for order by id {id}", request.Id);
+        logger.LogInformation("OrderDetailHandler finish for order by orderId {orderId}", request.Id);
         return Result<OrderDetailDto>.Success(result);
     }
 
@@ -58,27 +58,3 @@ public class OrderDetailHandler(
         return result;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

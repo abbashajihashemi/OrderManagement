@@ -7,7 +7,7 @@ public class PagedResult<T>(
     int totalCount)
 {
     public IEnumerable<T> Items { get; init; } = items;
-    private int TotalCount { get; init; } = totalCount;
+    public int TotalCount { get; init; } = totalCount;
 
     public bool HasPrevious => page > 1;
     public bool HasNext => page < TotalPages;
