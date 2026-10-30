@@ -1,4 +1,4 @@
-﻿using OrderManagement.Api.Logging;
+﻿using OrderManagement.Infrastructure.Logging;
 
 namespace OrderManagement.Api.Middlewares;
 
